@@ -9,17 +9,17 @@ from decopon.controller import Controller, Human
 
 Polygon = namedtuple("Polygon", ["mass", "radius", "color", "score", "index"])
 Polygons = [
-    Polygon(1, 10, (255, 0, 127), 0, 0),
-    Polygon(2, 20, (255, 0, 255), 1, 1),
-    Polygon(3, 30, (127, 0, 255), 3, 2),
-    Polygon(4, 40, (0, 0, 255), 6, 3),
-    Polygon(5, 50, (0, 127, 255), 10, 4),
-    Polygon(6, 60, (0, 255, 255), 15, 5),
-    Polygon(7, 70, (0, 255, 127), 21, 6),
-    Polygon(8, 80, (0, 255, 0), 28, 7),
-    Polygon(9, 90, (127, 255, 0), 36, 8),
-    Polygon(10, 100, (255, 255, 0), 45, 9),
-    Polygon(11, 110, (255, 127, 0), 55, 10),
+    Polygon(1, 13, (255, 0, 127), 0, 0),
+    Polygon(2, 17, (255, 0, 255), 1, 1),
+    Polygon(3, 24, (127, 0, 255), 3, 2),
+    Polygon(4, 28, (0, 0, 255), 6, 3),
+    Polygon(5, 35, (0, 127, 255), 10, 4),
+    Polygon(6, 46, (0, 255, 255), 15, 5),
+    Polygon(7, 53, (0, 255, 127), 21, 6),
+    Polygon(8, 65, (0, 255, 0), 28, 7),
+    Polygon(9, 73, (127, 255, 0), 36, 8),
+    Polygon(10, 90, (255, 255, 0), 45, 9),
+    Polygon(11, 100, (255, 127, 0), 55, 10),
 ]
 
 pygame.init()
@@ -43,7 +43,7 @@ class Game:
         self.walls = []
         self.create_walls()
 
-        self.indicator = pygame.Rect(WIDTH / 2, 200, 3, HEIGHT - 200)
+        self.indicator = pygame.Rect(WIDTH / 2, 100, 3, HEIGHT - 100)
 
         self.poly = []
 
@@ -67,8 +67,7 @@ class Game:
             self.poly.remove(p0)
             self.poly.remove(p1)
             space.remove(p0, p0.body, p1, p1.body)
-            # ここ何点？
-            self.score += 1000
+            self.score += 100 #double
             return False
 
         if p0.index == p1.index:
@@ -83,20 +82,20 @@ class Game:
         return True
 
     def create_walls(self):
-        floor = pymunk.Segment(self.space.static_body, (0, HEIGHT - 10), (WIDTH, HEIGHT - 10), 10)
+        floor = pymunk.Segment(self.space.static_body, (50, HEIGHT - 10), (WIDTH - 50, HEIGHT - 10), 10)
         floor.friction = 0.8
         floor.elasticity = 0.8
 
         self.walls.append(floor)
         self.space.add(floor)
 
-        left = pymunk.Segment(self.space.static_body, (10, 300), (10, HEIGHT), 10)
+        left = pymunk.Segment(self.space.static_body, (50, 200), (50, HEIGHT), 10)
         left.friction = 1.0
         left.elasticity = 0.95
         self.walls.append(left)
         self.space.add(left)
 
-        right = pymunk.Segment(self.space.static_body, (WIDTH - 10, 300), (WIDTH - 10, HEIGHT), 10)
+        right = pymunk.Segment(self.space.static_body, (WIDTH - 50, 200), (WIDTH - 50, HEIGHT), 10)
         right.friction = 1.0
         right.elasticity = 0.95
         self.walls.append(right)
@@ -129,7 +128,7 @@ class Game:
         self.poly.append(shape)
 
     def draw_walls(self):
-        pygame.draw.line(self.window, (240, 190, 153), (0, 300), (WIDTH, 300), 5)
+        pygame.draw.line(self.window, (240, 190, 153), (40, 200), (WIDTH - 40, 200), 3)
         for wall in self.walls:
             p1 = int(wall.a[0]), int(wall.a[1])
             p2 = int(wall.b[0]), int(wall.b[1])
@@ -137,7 +136,7 @@ class Game:
 
     def check_overflow(self):
         for poly in self.poly:
-            if poly.body.position.y - (poly.radius) < 300:
+            if poly.body.position.y - (poly.radius) < 200:
                 return True
         return False
 
@@ -167,10 +166,10 @@ class Game:
                 self.next = random.randint(0, 4)
                 self.countOverflow = 0
 
-            if self.indicator.centerx < 20:
-                self.indicator.centerx = WIDTH - 20
-            if self.indicator.centerx > WIDTH - 20:
-                self.indicator.centerx = 20
+            if self.indicator.centerx < 65:
+                self.indicator.centerx = WIDTH - 65
+            if self.indicator.centerx > WIDTH - 65:
+                self.indicator.centerx = 65
 
             self.window.fill((89, 178, 36))
             pygame.draw.rect(self.window, (255, 255, 255), self.indicator)
@@ -206,6 +205,7 @@ class Game:
 
             self.space.step(1 / 60)
             pygame.display.update()
+            self.fps(60)
 
             if self.countOverflow > 200:
                 self.isGameOver = True
