@@ -74,10 +74,11 @@ class Game:
             self.score += Polygons[p0.index].score
             x = (p0.body.position.x + p1.body.position.x) / 2
             y = (p0.body.position.y + p1.body.position.y) / 2
-            self.create_poly(x, y, p1.index + 1)
+            index = p1.index + 1
             self.poly.remove(p0)
             self.poly.remove(p1)
             space.remove(p0, p0.body, p1, p1.body)
+            self.create_poly(x, y, index)
             return False
         
         return True
@@ -156,6 +157,7 @@ class Game:
 
             # 修正して良いのは、updateに与えるinfoのデータのみ。
             # 今のところ、Trueが入っている。
+            # 例えば、update(self.poly)とすれば、すべての円の情報が渡されます。
             isLeft, isRight, isDrop = self.controller.update(True)
 
             if isLeft:
