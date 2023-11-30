@@ -78,7 +78,8 @@ class Game:
             self.poly.remove(p0)
             self.poly.remove(p1)
             space.remove(p0, p0.body, p1, p1.body)
-
+            return False
+        
         return True
 
     def create_walls(self):
@@ -153,7 +154,9 @@ class Game:
             if self.check_overflow():
                 self.countOverflow += 1
 
-            isLeft, isRight, isDrop = self.controller.update()
+            # 修正して良いのは、updateに与えるinfoのデータのみ。
+            # 今のところ、Trueが入っている。
+            isLeft, isRight, isDrop = self.controller.update(True)
 
             if isLeft:
                 self.indicator.centerx -= 3
@@ -215,7 +218,7 @@ class RandomPlayer(Controller):
     def __init__(self) -> None:
         super().__init__()
 
-    def update(self) -> Tuple[bool, bool, bool]:
+    def update(self, info) -> Tuple[bool, bool, bool]:
         return tuple(random.choice([True, False]) for _ in range(3))
 
 
