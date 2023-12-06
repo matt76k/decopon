@@ -57,17 +57,22 @@ class Game:
 
         self.isGameOver = False
         self.countOverflow = 0
+        self.isMerged = False
 
         self.progress = [pygame.Rect(10 + i * 20, 70, 20, 20) for i in range(11)]
 
     def merge(self, polys, space, _):
         p0, p1 = polys.shapes
 
+        if self.isMerged:
+            return True
+
         if p0.index == 10 and p1.index == 10:
             self.poly.remove(p0)
             self.poly.remove(p1)
             space.remove(p0, p0.body, p1, p1.body)
             self.score += 100 #double
+            self.isMerged = True
             return False
 
         if p0.index == p1.index:
@@ -79,6 +84,7 @@ class Game:
             self.poly.remove(p1)
             space.remove(p0, p0.body, p1, p1.body)
             self.create_poly(x, y, index)
+            self.isMerged = True
             return False
         
         return True
@@ -211,6 +217,7 @@ class Game:
             self.space.step(1 / 60)
             pygame.display.update()
             self.fps(60)
+            self.isMerged = False
 
             if self.countOverflow > 200:
                 self.isGameOver = True
