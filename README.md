@@ -1,46 +1,28 @@
 # Decopon 🍊
 
-これは、2023年度の創造実験用のプログラムです。
+## 実験の準備
 
-Getting Started (学科計算機)
-===============
+1. まずRyeをインストールします。OSに応じて以下のコマンドを実行してください:
 
-このコードをコピーして、ディレクトリに移動します。
+Linux/macOSの場合:
+```bash
+curl -sSf https://rye.astral.sh/get | bash
 ```
-git clone https://github.com/matt76k/decopon
+
+Windowsの場合:
+- [Ryeのインストールページ](https://rye.astral.sh/guide/installation/)から適切なバイナリをダウンロード
+- ダウンロードしたファイルを実行
+
+2. リポジトリをクローンし、必要なライブラリをインストール:
+```bash
+git clone https://github.com/matt76k/decopon/
 cd decopon
+rye sync
 ```
 
-decoponを使えるようにするため、必要なライブラリをインストールします。
+3. 実行
 ```
-pip install pygame pymunk
-```
-
-ゲームを起動しましょう。
-```
-PYTHONPATH=$PWD python3 src/main.py
-```
-
-Getting Started (通常)
-===============
-
-poetryをインストールします。
-[poetry](https://python-poetry.org/docs/)のページを参考に、自分の環境に合った方法でインストールしてください。
-
-```
-curl -sSL https://install.python-poetry.org | python -
-```
-
-decoponを使えるようにするため、installします。
-
-```
-poetry install
-```
-
-installできたら、ゲームを起動しましょう。
-
-```
-poetry run python src/main.py
+rye run python src/main.py
 ```
 
 Develop
